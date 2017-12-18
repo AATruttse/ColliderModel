@@ -1,0 +1,11 @@
+#include "CCollider.h"
+
+#ifndef CMODELOBJECT_H
+#define CMODELOBJECT_H
+
+class CModelObject {
+public:
+    CModelObject();
+};
+
+#endif // CMODELOBJECT_H
