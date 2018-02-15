@@ -1,20 +1,26 @@
 #include "CMovableObject.h"
+#include "CVelocity.h"
+#include "CPosition.h"
 
 #ifndef CPARTICLE_H
 #define CPARTICLE_H
 
-enum EParticleType{EPtPion = 0, EPtProton = 1};                 //???!!! where should it be?
+enum EParticleType{EPtPion = 0, EPtProton = 1};                 //???
 
-class CParticleFactory;
+class CParticleFactory;             // ???
 
 class CParticle : public CMovableObject {
 private:
-    CParticle();
+    CParticle() = default;
     CParticle(const CParticle &_c);
     CParticle &operator = (CParticle &_c);
+
     double m;
     double q;
-    EParticleType type;                                                                                 //???!!!
+    EParticleType type;                                                                                 //???
+
+    CPosition r;
+    CVelocity v;
 public:
 
     virtual void step();
@@ -23,7 +29,9 @@ public:
     double get_q() const;
     EParticleType get_type() const;
 
-    friend CParticleFactory;
+    CPosition get_position() const;
+
+    friend class CParticleFactory;
 };
 
 #endif // CPARTICLE_H

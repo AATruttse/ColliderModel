@@ -5,7 +5,6 @@ using namespace std;
 
 class CCollider {
 private:
-    //static CCollider *p_instance;
     double t;
 
     CCollider() = default;

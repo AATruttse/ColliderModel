@@ -1,10 +1,8 @@
 #include "CCollider.h"
 
-//CCollider *CCollider::p_instance = 0;
-
 //changing time of system
 void CCollider::Lstep(double dt) {
-    t += dt;
+    t += dt;                            // do !!!
 }
 
 double CCollider::get_t() const{

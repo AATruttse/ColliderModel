@@ -1,9 +1,6 @@
 #include "CParticle.h"
 #include <iostream>
 
-CParticle::CParticle() {
-}
-
 double CParticle::get_m() const {
     return m;
 }
@@ -16,6 +13,10 @@ EParticleType CParticle::get_type() const {
     return type;
 }
 
+CPosition CParticle::get_position() const {
+    return r;
+}
+
 void CParticle::step() {
-    CMovableObject::step();
+    CMovableObject::step();     // do !!!
 }

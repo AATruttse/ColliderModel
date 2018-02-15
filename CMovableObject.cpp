@@ -1,8 +1,7 @@
 #include "CMovableObject.h"
 
-CMovableObject::CMovableObject() {
-}
+CMovableObject::CMovableObject() {}
 
 void CMovableObject::step() {
-    CObject::step();
+    CObject::step();            // do !!!
 }

@@ -8,12 +8,16 @@ SOURCES += main.cpp \
     CObject.cpp \
     CMovableObject.cpp \
     CParticle.cpp \
-    CParticleFactory.cpp
+    CParticleFactory.cpp \
+    CVector3.cpp
 
 HEADERS += \
     CCollider.h \
     CObject.h \
     CMovableObject.h \
     CParticle.h \
-    CParticleFactory.h
+    CParticleFactory.h \
+    CVector3.h \
+    CVelocity.h \
+    CPosition.h
 

@@ -1,9 +1,7 @@
 #include "CObject.h"
 
-CObject::CObject() {
+CObject::CObject() {}
 
-}
-
-void CObject::step() {
+void CObject::step() {      // do !!!
 
 }

@@ -1,24 +1,28 @@
 #include "CParticleFactory.h"
 #include "CParticle.h"
 #include <stdlib.h>
+#include <iostream>
 
-//CParticleFactory *CParticleFactory::p_instance = 0;
+// may be it's better to put double x, y, z ???!!!
+CParticle* CParticleFactory::createParticle(const EParticleType type, const CPosition &r, const CVelocity &v) const {
+    CParticle *particle = new CParticle();      // may be better to put it into switch and use constructor !!!
 
-CParticle* CParticleFactory::createParticle(const EParticleType type) const {
-    CParticle *particle;
     switch (type)
     {
         case EPtPion:
-            particle = new CParticle();
-            // use CParticleBook
+            // use CParticleBook !!!
             break;
         case EPtProton:
-            particle = new CParticle();
-            // use CParticleBook
+            // use CParticleBook !!!
             break;
         default:
             exit(15);   // if something goes wrong (how?)
     }
     particle->type = type;
+
+
+    particle->r = r;
+    particle->v = v;
+
     return particle;
 }
