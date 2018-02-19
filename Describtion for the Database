@@ -1,0 +1,12 @@
+It is assumed that users know the format of database. Each particle should go on a separate line.
+Name goes first, than dividing symbol "hash"(#) - taken for conveniency - than mass (in MeV!), 
+than dividing symbol, than charge, than dividing symbol again.
+
+Like this:
+
+ELECTRON#0.51#-1#
+PI_ZERO#134.98#0#
+
+Note: the database cannot contain two or more examples of the same particle. 
+Also, all names are case-dependent, so "ALPHA", "alpha", "Alpha" and "aLPHA" are four different database entries.
+UPPER-CASE is reccommended to be used while editing database file.
