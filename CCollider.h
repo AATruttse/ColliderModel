@@ -1,22 +1,31 @@
-#ifndef CCOLLIDER_H
-#define CCOLLIDER_H
+#ifndef __CCOLLIDER_H__
+#define __CCOLLIDER_H__
 
-using namespace std;
+#include "Rtypes.h"
 
-class CCollider {
-private:
-    double t;
+namespace ColliderModel {
 
-    CCollider() = default;
-    CCollider(const CCollider&);
-    CCollider &operator = ( CCollider& );
-public:
-    static CCollider &getInstance() {
-        static CCollider  instance;
-        return instance;
-    }
+    class CCollider {
+        private:
+            Double_t m_T;
+            Double_t m_Step;
 
-    double get_t() const;                   // returns t
-    void Lstep(const double dt);            // changes t to t + dt
-};
-#endif // CCOLLIDER_H
+            CCollider() {};
+            CCollider(const CCollider& _copy) {};
+            CCollider& operator= (const CCollider& _copy) {};
+    
+        public:
+            static CCollider& collider();
+
+            Double_t t() const {return m_T;}
+            Double_t time() const {return t();}
+            Double_t step() const {return m_Step;}
+            
+            void setStep(const Double_t _step) { m_Step = _step; }
+            
+            Double_t step();
+            Double_t step(const Double_t _dt);
+    };
+
+}
+#endif // __CCOLLIDER_H__

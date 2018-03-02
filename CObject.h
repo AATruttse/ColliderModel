@@ -1,11 +1,20 @@
-#ifndef COBJECT_H
-#define COBJECT_H
+#ifndef __COBJECT_H__
+#define __COBJECT_H__
 
-class CObject {
-public:
-    CObject();
+#include "Rtypes.h"
 
-    virtual void step();
-};
+namespace ColliderModel {
 
-#endif // COBJECT_H
+    // CObject - base class for all steppable object
+
+    class CObject {
+    public:
+        CObject();
+        ~CObject();
+        
+        virtual void step(Double_t _dt) = 0;
+    }; // CObject
+    
+} // namespace ColliderModel
+#endif // __COBJECT_H__
+

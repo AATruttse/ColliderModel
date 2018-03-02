@@ -1,7 +1,16 @@
 #include "CObject.h"
+#include "CObjectManager.h"
 
-CObject::CObject() {}
+namespace ColliderModel {
 
-void CObject::step() {      // do !!!
-
-}
+    CObject::CObject()
+    {
+        CObjectManager::manager().addObject(this);
+    }
+    
+    CObject::~CObject()
+    {
+        CObjectManager::manager().removeObject(this);
+    }
+   
+} // namespace ColliderModel

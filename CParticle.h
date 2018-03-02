@@ -1,37 +1,30 @@
+#ifndef __CPARTICLE_H__
+#define __CPARTICLE_H__
+
 #include "CMovableObject.h"
-#include "CVelocity.h"
-#include "CPosition.h"
 
-#ifndef CPARTICLE_H
-#define CPARTICLE_H
+namespace ColliderModel
+{
+    class CParticleFactory;
 
-enum EParticleType{EPtPion = 0, EPtProton = 1};                 //???
+    class CParticle : public CMovableObject {
 
-class CParticleFactory;             // ???
+    private:
+        CParticle();
+        CParticle(const TVector3 &_pos);
+        CParticle(const TVector3 &_pos, const TVector3 &_velocity);
+        CParticle(const CParticle &_copy);
+        CParticle& operator=(CParticle &_copy);
 
-class CParticle : public CMovableObject {
-private:
-    CParticle() = default;
-    CParticle(const CParticle &_c);
-    CParticle &operator = (CParticle &_c);
+    public:
+        virtual void step(Double_t _dt);
 
-    double m;
-    double q;
-    EParticleType type;                                                                                 //???
+        Double_t m() const;
+        Double_t q() const;
 
-    CPosition r;
-    CVelocity v;
-public:
+        friend class CParticleFactory;
 
-    virtual void step();
-
-    double get_m() const;
-    double get_q() const;
-    EParticleType get_type() const;
-
-    CPosition get_position() const;
-
-    friend class CParticleFactory;
-};
-
-#endif // CPARTICLE_H
+    }; //class CParticle
+    
+} // namespace ColliderModel
+#endif // __CPARTICLE_H__

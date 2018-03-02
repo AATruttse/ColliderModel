@@ -1,22 +1,45 @@
 #include "CParticle.h"
-#include <iostream>
 
-double CParticle::get_m() const {
-    return m;
-}
+namespace ColliderModel
+{
+    CParticle::CParticle() :
+        CMovableObject()
+    {
+    }
 
-double CParticle::get_q() const {
-    return q;
-}
+    CParticle::CParticle(const TVector3 &_pos) :
+        CMovableObject(_pos)
+    {
+    }
 
-EParticleType CParticle::get_type() const {
-    return type;
-}
+    CParticle::CParticle(const TVector3 &_pos, const TVector3 &_velocity) :
+        CMovableObject(_pos, _velocity)
+    {
+    }
 
-CPosition CParticle::get_position() const {
-    return r;
-}
+    CParticle::CParticle(const CParticle &_copy) :
+        CMovableObject(_copy)
+    {
+    }
 
-void CParticle::step() {
-    CMovableObject::step();     // do !!!
-}
+    CParticle& CParticle::operator=(CParticle &_copy)
+    {
+        CMovableObject::operator=(_copy);
+    }
+
+    void CParticle::step(Double_t _dt)
+    {
+        CMovableObject::step(_dt);
+    }
+
+    Double_t CParticle::m() const
+    {
+        return 0.0;
+    }
+    
+    Double_t CParticle::q() const
+    {
+        return 0.0;
+    }
+    
+} // namespace ColliderModel

@@ -1,20 +1,21 @@
-#include "CParticle.h"
+#ifndef __CPARTICLEFACTORY_H__
+#define __CPARTICLEFACTORY_H__
 
-#ifndef CPARTICLEFACTORY_H
-#define CPARTICLEFACTORY_H
+namespace ColliderModel
+{
+    class CParticle;
+    class CParticleFactory {
+    
+        private:
+            CParticleFactory() {}
+            CParticleFactory(const CParticleFactory &_copy) {}
+            CParticleFactory &operator=(CParticleFactory &_copy) {}
+        
+        public:
+            static CParticleFactory& particleFactory();
+            CParticle* createParticle(const TVector3 &_pos, const TVector3 &_velocity) const;
+    }; // class CParticleFactory
+    
+} // namespace ColliderModel
 
-class CParticleFactory {
-private:
-
-    CParticleFactory() = default;
-    CParticleFactory(const CParticleFactory &_c);
-    CParticleFactory &operator = (CParticleFactory &_c);
-public:
-    static CParticleFactory &getInstance() {
-        static CParticleFactory  instance;
-        return instance;
-    }
-    CParticle *createParticle(const EParticleType type, const CPosition &r, const CVelocity &v) const;                                 //???!!! into private?
-};
-
-#endif // CPARTICLEFACTORY_H
+#endif // __CPARTICLEFACTORY_H__
