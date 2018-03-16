@@ -36,7 +36,6 @@ CParticleBook::CParticleBook()
 std::vector<TString> CParticleBook::databaseUnfold (std::string input_str)
 {
   std::vector<TString> UnfoldedDatabaseParts;
-//  std::string input_str = _database_str.Data();
   std::string::iterator input_str_iter_fast = input_str.begin();
   std::string::iterator input_str_iter_slow = input_str.begin();
   while (input_str_iter_slow == input_str.end())
@@ -82,9 +81,10 @@ Int_t CParticleBook::updateData(TString _filename)
   return 0;
 }
 
-CParticleData& CParticleBook::getData(TString _particleName)
+const CParticleData& CParticleBook::getData(TString _particleName)
 {
-  auto search_iter = particleMap.find(_particleName);
+  std::map<TString, CParticleData>::const_iterator search_iter;
+  search_iter = particleMap.find(_particleName);
   if (search_iter == particleMap.end())
   {
     return __null__particle;
@@ -102,7 +102,5 @@ Int_t CParticleBook::checkValidity()
   }
   return 0;
 }
-
-
 
 } // For namespace

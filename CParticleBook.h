@@ -15,14 +15,14 @@ struct CParticleData
 class CParticleBook : public CBook
 {
 public:
-  CParticleData& getData(TString _particle);
+  const CParticleData& getData(TString _particle);
   Int_t updateData(TString _filename);
   Int_t checkValidity();
   static CParticleBook& getInstance();
   Char_t getSeparator() const;
   Int_t setSeparator(Char_t _ch);
   Int_t defaultSeparator();
-  virtual ~CParticleBook();
+  virtual ~CParticleBook() {};
 
 private:
   CParticleBook();

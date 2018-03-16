@@ -6,7 +6,6 @@
 #include <map>
 #include <string>
 #include <iterator>
-#include "RtypesCore.h"
 #include "TString.h"
 
 namespace ColliderModel{
