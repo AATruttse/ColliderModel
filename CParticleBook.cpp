@@ -45,7 +45,7 @@ std::vector<TString> CParticleBook::databaseUnfold (std::string input_str)
       ++input_str_iter_fast;
     }
     std::string substring(input_str_iter_slow, input_str_iter_fast);
-    TString vec_member = substring;
+    TString vec_member = substring.c_str();
     UnfoldedDatabaseParts.push_back(vec_member);
     while ((input_str_iter_fast != input_str.end())&&(*input_str_iter_fast == separator))
     {
