@@ -26,6 +26,7 @@ namespace ColliderModel {
         
         const TVector3& pos() const {return m_Pos;}
         const TVector3& velocity() const {return m_Velocity;}
+        const TVector3& v() const {return velocity();}
         void setPos(const TVector3 &_pos) {m_Pos = _pos;}
         void setVelocity(const TVector3 &_velocity) {m_Velocity = _velocity;}
         

@@ -18,18 +18,18 @@ struct CFissionData
 class CFissionBook : public CBook
 {
 public:
-  std::vector<CFissionData>& getData(TString _particle);//
+  const std::vector<CFissionData>& getData(TString _particle);//
   Int_t updateData(TString _filename); //
   Int_t checkValidity(); //
   static CFissionBook& getInstance(); //
   Char_t getSeparator() const; //
   Int_t setSeparator(Char_t _ch); //
   Int_t defaultSeparator(); //
-  virtual ~CFissionBook() = {}; //
+  virtual ~CFissionBook() {}; //
 
 private:
   CFissionBook(); //
-  CFissionBook(const CParticleBook&); //
+  CFissionBook(const CFissionBook&); //
   CFissionBook& operator= (const CFissionBook); //
   std::vector<TString> databaseUnfold(std::string input_str); //
   std::map<TString, std::vector<CFissionData> > fissionMap; //

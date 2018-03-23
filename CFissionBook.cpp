@@ -1,7 +1,9 @@
-namespace ColliderModel {
-
 #include <algorithm>
+#include <list>
+
 #include "CFissionBook.h"
+
+namespace ColliderModel {
 
 /*
 class myCrippledFunctor {
@@ -83,7 +85,7 @@ std::vector<TString> CFissionBook::databaseUnfold (std::string input_str)
   return UnfoldedDatabaseParts;
 }
 
-std::vector<CFissionData>& CFissionBook::getData(TString _particle)
+const std::vector<CFissionData>& CFissionBook::getData(TString _particle)
 {
 std::map<TString, std::vector <CFissionData> >::const_iterator search_iter;
 search_iter = fissionMap.find(_particle);
@@ -111,11 +113,12 @@ Int_t CFissionBook::updateData(TString _filename)
       data_file.close();
       return -2; //Damaged database entries
     }
-    CFissionData temp_scenario : fProbability(temp_unfolded[1].Atof());
+    CFissionData temp_scenario;
+    temp_scenario.fProbability = temp_unfolded[1].Atof();
     std::vector<TString>::iterator point = (temp_unfolded.begin() + 2);
     std::copy(point,
               temp_unfolded.end(),
-              (fissionMap[ temp_unfolded[0] ]).begin()
+              (fissionMap[ temp_unfolded[0]])[0].fShatters.begin()
               );
 
   /*  std::for_each(point,
@@ -131,12 +134,12 @@ Int_t CFissionBook::updateData(TString _filename)
 
 
 
-Int_t checkValidity()
+Int_t CFissionBook::checkValidity()
 {
   std::list < std::map < TString, std::vector < CFissionData > >::iterator > /*BRUTAL!*/ blacklist;
   Int_t counter = 0;
   for ( std::map<TString, std::vector<CFissionData> >::iterator map_iter = fissionMap.begin();
-        map_iter < fissionMap.end();
+        map_iter != fissionMap.end();
         map_iter++ )
         {
           if (
@@ -146,12 +149,15 @@ Int_t checkValidity()
              )
           {
             blacklist.push_front(map_iter);
+              
           }
         }
+        
+        
   std::list<std::map <TString, std::vector < CFissionData > >::iterator >::iterator  blacklist_iter;
-  for (blacklist_iter == blacklist.begin(); blacklist_iter < blacklist.end(); blacklist_iter++)
+  for (blacklist_iter == blacklist.begin(); blacklist_iter != blacklist.end(); blacklist_iter++)
   {
-    (*blacklist_iter).erase()
+    fissionMap.erase(*blacklist_iter);
   }
   return 0;
 }
