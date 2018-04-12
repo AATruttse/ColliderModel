@@ -5,6 +5,9 @@
 
 namespace ColliderModel {
 
+std::vector<TString> __null_shatters;
+static CFissionData __null_fission = {-1, __null_shatters};
+std::vector<CFissionData> __null_data;
 /*
 class myCrippledFunctor {
   std::vector<TString>* p_to_arr;
@@ -91,7 +94,7 @@ std::map<TString, std::vector <CFissionData> >::const_iterator search_iter;
 search_iter = fissionMap.find(_particle);
 if (search_iter == fissionMap.end())
 {
-  return -1;
+  return __null_data; //Empty!
 }
 else return (search_iter -> second);
 }
@@ -149,11 +152,11 @@ Int_t CFissionBook::checkValidity()
              )
           {
             blacklist.push_front(map_iter);
-              
+
           }
         }
-        
-        
+
+
   std::list<std::map <TString, std::vector < CFissionData > >::iterator >::iterator  blacklist_iter;
   for (blacklist_iter == blacklist.begin(); blacklist_iter != blacklist.end(); blacklist_iter++)
   {
