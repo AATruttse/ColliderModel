@@ -1,4 +1,5 @@
 #include "CParticleBook.h"
+#include <iostream>
 
 namespace ColliderModel {
 
@@ -38,7 +39,7 @@ std::vector<TString> CParticleBook::databaseUnfold (std::string input_str)
   std::vector<TString> UnfoldedDatabaseParts;
   std::string::iterator input_str_iter_fast = input_str.begin();
   std::string::iterator input_str_iter_slow = input_str.begin();
-  while (input_str_iter_slow == input_str.end())
+  while (input_str_iter_slow != input_str.end())
   {
     while ((input_str_iter_fast != input_str.end())&&(*input_str_iter_fast != separator))
     {
@@ -63,14 +64,16 @@ Int_t CParticleBook::updateData(TString _filename)
   data_file.open(_filename.Data());
   if (!data_file.is_open())
   {
+    std::cout << "Cannot open the file " << _filename << std::endl;
     return -1; //Cannot open the file
   }
-  while(!std::getline(data_file, line_buffer))
+  while(std::getline(data_file, line_buffer))
   {
     std::vector<TString> temp_unfolded = databaseUnfold(line_buffer);
     if (temp_unfolded.size() < 4)
     {
       data_file.close();
+      std::cout << "Damaged database entries" << std::endl;
       return -2; //Damaged database entries
     }
     CParticleData temp_particle = { temp_unfolded[1].Atof(),
@@ -78,18 +81,21 @@ Int_t CParticleBook::updateData(TString _filename)
                                     temp_unfolded[3].Atof() };
     particleMap[ temp_unfolded[0] ] = temp_particle;
   }
+  std::cout << "Update data sucesfully, read " << particleMap.size() << "entries" << std::endl;
   return 0;
 }
 
 const CParticleData& CParticleBook::getData(TString _particleName)
 {
   std::map<TString, CParticleData>::const_iterator search_iter;
+  std::cout << particleMap.size() << std::endl;
+
   search_iter = particleMap.find(_particleName);
   if (search_iter == particleMap.end())
   {
     return __null__particle;
   }
-  else return (search_iter -> second);
+  return (search_iter -> second);
 }
 
 Int_t CParticleBook::checkValidity()

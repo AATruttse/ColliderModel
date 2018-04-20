@@ -38,10 +38,10 @@ namespace ColliderModel {
         
     }
             
-    void CMovableObject::step(Double_t _dt)
+    bool CMovableObject::step(Double_t _dt)
     {
         m_Pos += m_Velocity * _dt;
-        
+        return 0;
     }
     
 } // namespace ColliderModel

@@ -18,6 +18,7 @@ namespace ColliderModel {
     {
         CObjectManager::manager().step(_dt);
         m_T += _dt;
+        return m_T;
     }
     
 } // namespace ColliderModel

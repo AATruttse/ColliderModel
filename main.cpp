@@ -1,9 +1,13 @@
 #include <iostream>
 
 #include "TVector3.h"
+#include "TRandom.h"
 
 #include "CCollider.h"
 #include "CMovableObject.h"
+
+#include "CParticleBook.h"
+#include "CFissionBook.h"
 
 #include "CParticle.h"
 #include "CParticleFactory.h"
@@ -12,6 +16,7 @@ using namespace ColliderModel;
 
 int main()
 {
+    gRandom->SetSeed();
     TVector3 r1, r2;
 
     r1.SetX(1.0);
@@ -22,11 +27,18 @@ int main()
     r2.SetY(1.0);
     r2.SetZ(1.0);
     
-    CParticle *pParticle = CParticleFactory::particleFactory().createParticle(r1, r2);
+    const TString str = "ELECTRON";
     
+    CFissionBook::getInstance().updateData("FissionData");
+    CParticleBook::getInstance().updateData("ParticleData");
+
+    CParticle *pParticle = CParticleFactory::particleFactory().createParticle(str, r1, r2);
+
     CCollider::collider().setStep(0.001);
-    for (int i = 0; i < 1500; i++)
+    for (int i = 0; i < 15; i++)
     {
+	// printf("current step is %d", i);
+	CParticleFactory::particleFactory().show();
         CCollider::collider().step();
     }
 

@@ -46,7 +46,7 @@ namespace ColliderModel {
         
         CDetector& operator=(const CDetector &_copy);
             
-        virtual void step(Double_t _dt);
+        virtual bool step(Double_t _dt);
         
         const TVector3& pos() const {return m_Pos;}
         const TVector3& size() const {return m_Size;}

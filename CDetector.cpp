@@ -36,7 +36,7 @@ namespace ColliderModel {
         
     }
     
-    void CDetector::step(Double_t _dt)
+    bool CDetector::step(Double_t _dt)
     {
     }
     
@@ -49,7 +49,7 @@ namespace ColliderModel {
         newEvent.m_Mass = _particle.m();
         newEvent.m_Charge = _particle.q();
         newEvent.m_Pos = _pos;
-        newEvent.m_Velocity = _particle.v();
+        newEvent.m_Velocity = _particle.velocity();
                
         
         m_EventList.push_back(newEvent);

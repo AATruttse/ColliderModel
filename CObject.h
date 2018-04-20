@@ -12,7 +12,7 @@ namespace ColliderModel {
         CObject();
         ~CObject();
         
-        virtual void step(Double_t _dt) = 0;
+        virtual bool step(Double_t _dt) = 0;
     }; // CObject
     
 } // namespace ColliderModel

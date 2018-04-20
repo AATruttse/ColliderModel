@@ -1,6 +1,7 @@
 #ifndef __CCOLLIDER_H__
 #define __CCOLLIDER_H__
 
+#include <iostream>
 #include "Rtypes.h"
 
 namespace ColliderModel {
@@ -19,9 +20,9 @@ namespace ColliderModel {
 
             Double_t t() const {return m_T;}
             Double_t time() const {return t();}
-            Double_t step() const {return m_Step;}
+            Double_t getStep() const {return m_Step;}
             
-            void setStep(const Double_t _step) { m_Step = _step; }
+            void setStep(const Double_t _step) { m_Step = _step;}
             
             Double_t step();
             Double_t step(const Double_t _dt);

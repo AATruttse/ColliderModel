@@ -71,24 +71,23 @@ std::vector<TString> CFissionBook::databaseUnfold (std::string input_str)
   std::vector<TString> UnfoldedDatabaseParts;
   std::string::iterator input_str_iter_fast = input_str.begin();
   std::string::iterator input_str_iter_slow = input_str.begin();
-  while (input_str_iter_slow == input_str.begin())
+  while (input_str_iter_slow != input_str.end())
   {
     while ((input_str_iter_fast != input_str.end())&&(*input_str_iter_fast != separator))
     {
       ++input_str_iter_fast;
     }
     std::string substring(input_str_iter_slow, input_str_iter_fast);
-    std::cout << substring << std::endl;
     TString vec_member = substring.c_str();
     UnfoldedDatabaseParts.push_back(vec_member);
+
     while ((input_str_iter_fast != input_str.end())&&(*input_str_iter_fast == separator))
     {
       ++input_str_iter_fast;
     }
     input_str_iter_slow = input_str_iter_fast;
-    UnfoldedDatabaseParts.push_back(vec_member);
   }
-    std::cout << UnfoldedDatabaseParts.size() << std::endl;
+
   return UnfoldedDatabaseParts;
 }
 
@@ -116,6 +115,7 @@ Int_t CFissionBook::updateData(TString _filename)
   //std::cout << line_buffer << std::endl;
   while(std::getline(data_file, line_buffer))	// removed "!"
   {
+    std::cout << line_buffer << std::endl;
     std::vector<TString> temp_unfolded = databaseUnfold(line_buffer);
     if (temp_unfolded.size() < 3)
     {
@@ -124,13 +124,18 @@ Int_t CFissionBook::updateData(TString _filename)
     }
     CFissionData temp_scenario;
     temp_scenario.fProbability = temp_unfolded[1].Atof();
+    
     //printf("%c\n ", temp_unfolded[1]);
     std::vector<TString>::iterator point = (temp_unfolded.begin() + 2);
+    std::cout << (fissionMap[ temp_unfolded[0]]).size() << std::endl;
+
     std::copy(point,
               temp_unfolded.end(),
-              (fissionMap[ temp_unfolded[0]])[0].fShatters.begin()
+              std::inserter(temp_scenario.fShatters, temp_scenario.fShatters.begin())
               );
 
+    fissionMap[temp_unfolded[0]].push_back(temp_scenario);
+    std::cout << "c" << std::endl;
   /*  std::for_each(point,
                   temp_unfolded.end(),
                   myCrippledFunctor fct( &(temp_scenario.fShatters) );
@@ -140,6 +145,7 @@ Int_t CFissionBook::updateData(TString _filename)
   //  (fissionMap[ temp_unfolded[0] ]).push_back(temp_scenario);
   }
   data_file.close();
+
   return 0;
 }
 
