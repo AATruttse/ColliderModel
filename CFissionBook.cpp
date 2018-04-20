@@ -79,7 +79,8 @@ std::vector<TString> CFissionBook::databaseUnfold (std::string input_str)
     }
     std::string substring(input_str_iter_slow, input_str_iter_fast);
     std::cout << substring << std::endl;
-    TString vec_member = substring;
+    TString vec_member = substring.c_str();
+    UnfoldedDatabaseParts.push_back(vec_member);
     while ((input_str_iter_fast != input_str.end())&&(*input_str_iter_fast == separator))
     {
       ++input_str_iter_fast;
