@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <iostream>
+#include "CParticleFactory.h"
 
 #include "CObjectManager.h"
 #include "CObject.h"
@@ -39,10 +41,13 @@ namespace ColliderModel {
         for (objPointerListIter iter = m_pObjects.begin(); iter != m_pObjects.end(); iter++)
         {
             if (*iter != 0)
-            {
-                (*iter)->step(_dt);
+            {  
+                if ((*iter)->step(_dt)) {
+			iter--;
+		}
             }
         }
+
     }
     
 } // namespace ColliderModel

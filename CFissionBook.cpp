@@ -111,11 +111,8 @@ Int_t CFissionBook::updateData(TString _filename)
   {
     return -1; //Cannot open the file
   }
-  //std::cout << !std::getline(data_file, line_buffer) << std::endl;
-  //std::cout << line_buffer << std::endl;
-  while(std::getline(data_file, line_buffer))	// removed "!"
+  while(std::getline(data_file, line_buffer))
   {
-    std::cout << line_buffer << std::endl;
     std::vector<TString> temp_unfolded = databaseUnfold(line_buffer);
     if (temp_unfolded.size() < 3)
     {
@@ -127,7 +124,6 @@ Int_t CFissionBook::updateData(TString _filename)
     
     //printf("%c\n ", temp_unfolded[1]);
     std::vector<TString>::iterator point = (temp_unfolded.begin() + 2);
-    std::cout << (fissionMap[ temp_unfolded[0]]).size() << std::endl;
 
     std::copy(point,
               temp_unfolded.end(),
@@ -135,7 +131,6 @@ Int_t CFissionBook::updateData(TString _filename)
               );
 
     fissionMap[temp_unfolded[0]].push_back(temp_scenario);
-    std::cout << "c" << std::endl;
   /*  std::for_each(point,
                   temp_unfolded.end(),
                   myCrippledFunctor fct( &(temp_scenario.fShatters) );

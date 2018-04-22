@@ -4,6 +4,7 @@
 #include "CParticleBook.h"
 #include "CFissionBook.h"
 #include "CCollider.h"
+#include "CObjectManager.h"
 #include <cmath>
 #include "TRandom.h"
 #include <iostream>	// for some outputs
@@ -41,62 +42,64 @@ namespace ColliderModel
         CMovableObject::operator=(_copy);
     }
 
-    bool CParticle::step(Double_t _dt)
+    bool CParticle::step(Double_t _dt)		// creates two particles instead of one
     {
-        CMovableObject::step(_dt);
-        
-	// if the particle was create during this step, it won't have a decay
+	// if the particle was create during this step, it won't be stepped
         if (is_Created) {
              is_Created = 0;
+
              return 0;
         }
+	
+        CMovableObject::step(_dt);
 
+        //std::cout << "hi" << std::endl;
         std::vector<CFissionData> fissData = CFissionBook::getInstance().getData(m_Name);	     			// Get information about scenarios of fission    				                                   	        
 	Double_t prob = gRandom->Rndm();	// may be better to add seed to generator
         for(std::vector<CFissionData>::iterator it = fissData.begin(); it != fissData.end(); it++) {
-		printf("prob = %f, I will decay if it is bigger then %f", prob, (*it).fProbability * CCollider::collider().getStep());        
-		if (prob > (*it).fProbability * CCollider::collider().getStep()) {						// if fission occurs
-                   Int_t n = (*it).fShatters.size();									// amount of shatters
-                   std::vector<CParticle*> shat;									// vector where shatters will be collected
-
+		// need to reconsider the way we choose which decay occurs!    
+		if (prob < (*it).fProbability) {						// if fission occurs
+                   Int_t n = (*it).fShatters.size();
+                   std::vector<CParticle*> shat;
 		   Double_t E = m_Mass*m_Velocity*m_Velocity/2;
 		   Double_t checkE = E; 		// to check coservation law
+		   Double_t partE = 0.0;
                    for (Int_t i = 0; i < n - 1; i++) {
 			 Double_t E_new = gRandom->Rndm() * E;		// Energy of the new particle
 			 Double_t vsqr = 2 * E_new / CParticleBook::getInstance().getData((*it).fShatters[i]).pMass;
 			 // may be better to unite following actions!
-			 Double_t vx_sqr = gRandom->Rndm() * vsqr;						
+			 Double_t vx_sqr = gRandom->Rndm() * vsqr;					
                          Double_t vy_sqr = gRandom->Rndm() * (vsqr - vx_sqr);
 			 Double_t vz_sqr = vsqr - vx_sqr - vy_sqr;
-			 Double_t vx = (gRandom->Integer(2)*2 - 1)*sqrt(vx_sqr);
-			 Double_t vy = (gRandom->Integer(2)*2 - 1)*sqrt(vy_sqr);
-			 Double_t vz = (gRandom->Integer(2)*2 - 1)*sqrt(vz_sqr);
+			 Double_t vx = (gRandom->Integer(2)*2 - 1.0)*sqrt(vx_sqr);
+			 Double_t vy = (gRandom->Integer(2)*2 - 1.0)*sqrt(vy_sqr);
+			 Double_t vz = (gRandom->Integer(2)*2 - 1.0)*sqrt(vz_sqr);
                          TVector3 vel(vx, vy, vz);	// we also need velocities < 0, so we need some random of -1 or 1!
                          shat.push_back(CParticleFactory::particleFactory().createParticle((*it).fShatters[i], m_Pos, vel));   // remember shatters
+			 std::cout << " by " << this << std::endl;
 			 E -= E_new;
                    }
-
                    // now find total momentum to determin momentum of the last particle
-		   Double_t partE = 0;
-                   TVector3 totalMomentum;										// total momentum
-                   for (std::vector<CParticle*>::iterator iter = shat.begin(); iter != shat.end() - 1; iter++) {
-                         totalMomentum += (*iter)->m_Velocity * (*iter)->m_Mass;
-			 partE += (*iter)->m_Mass*(*iter)->m_Velocity*(*iter)->m_Velocity/2;
-                   }
-		   
-		   TVector3 vLast = -totalMomentum*(1.0/CParticleBook::getInstance().getData((*it).fShatters[n - 1]).pMass);	// velocity of the last particle
+                   TVector3 totalMomentum(0.0, 0.0, 0.0);				// total momentum
+                   for (std::vector<CParticle*>::iterator iter = shat.begin(); iter != shat.end(); iter++) {
+                   	totalMomentum += (*iter)->m_Velocity * (*iter)->m_Mass;
+		   	partE += (*iter)->m_Mass*(*iter)->m_Velocity*(*iter)->m_Velocity/2;
+		   }
+		   TVector3 vLast = m_Mass*m_Velocity-totalMomentum*(1.0/CParticleBook::getInstance().getData((*it).fShatters[n - 1]).pMass);	// velocity of the last particle
                    CParticleFactory::particleFactory().createParticle((*it).fShatters[n - 1], m_Pos, vLast);	// creation of the last particle
-		   // check of laws of conservation
 		   partE += CParticleBook::getInstance().getData((*it).fShatters[n - 1]).pMass*vLast*vLast/2;
-		   if (fabs(E - partE) > E*0.0001) {
-			std::cout << "no conservation of energy!" << std::endl;
+		   std::cout << " by " << this  << std::endl;
+		   // check of laws of conservation
+		   if (fabs(checkE - partE) > checkE*0.01) {
+			std::cout << "no conservation of energy: " << fabs(checkE - partE) << " > " << checkE*0.01 << std::endl;
 		   }            
-		   // here we need check for momentum!     
+		   // here we need check for momentum!
+		   // and may be others (charge and so on)!    
 		
+		   delete this;
                    return 1;
 		}
         }
-
 	return 0;      
     }
 
@@ -119,4 +122,9 @@ namespace ColliderModel
     {
         return m_hf;
     }
+
+    CParticle::~CParticle() {
+	CParticleFactory::particleFactory().removeParticle(this);
+    }
+
 } // namespace ColliderModel

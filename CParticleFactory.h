@@ -3,6 +3,8 @@
 
 #include <list>
 
+#include "TVector3.h"
+
 namespace ColliderModel
 {
     
@@ -26,7 +28,10 @@ namespace ColliderModel
         public:
             static CParticleFactory& particleFactory();
             CParticle* createParticle(const TString &_name, const TVector3 &_pos, const TVector3 &_velocity) const;
+	    void clean();
 	    void show();
+
+	    friend class CParticle;
     }; // class CParticleFactory
     
 } // namespace ColliderModel

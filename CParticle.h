@@ -22,7 +22,9 @@ namespace ColliderModel
         CParticle(const CParticle &_copy);
         CParticle& operator=(CParticle &_copy);
 
+
     public:
+	virtual ~CParticle();
         virtual bool step(Double_t _dt);
 
         TString name() const;

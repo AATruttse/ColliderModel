@@ -11,6 +11,7 @@ namespace ColliderModel
     {
         if (_pParticle != 0)
         {
+	    std::cout << _pParticle << " was born" << std::endl;
             m_pParticles.push_back(_pParticle);
         }
     }
@@ -23,10 +24,10 @@ namespace ColliderModel
             if (foundIter != m_pParticles.end())
             {
                 m_pParticles.erase(foundIter);
+	    	std::cout << _pParticle << " was erased" << std::endl;
                 return true;
             }
         }
-        
         return false;
     }
 
@@ -42,6 +43,17 @@ namespace ColliderModel
         CParticle* pParticle = new CParticle(_name, _pos, _velocity);
         CParticleFactory::particleFactory().addParticle(pParticle);
         return pParticle;
+    }
+
+    void CParticleFactory::clean() {
+	for (partPointerListIter iter = m_pParticles.begin(); iter != m_pParticles.end(); iter++)
+        {
+            if (*iter != 0)
+            {
+                delete *iter;
+		iter--;
+            }
+        }
     }
 
     void CParticleFactory::show() {

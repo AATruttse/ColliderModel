@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 
 #include "TVector3.h"
 #include "TRandom.h"
@@ -14,9 +15,9 @@
 
 using namespace ColliderModel;
 
-int main()
+int main()	// doesn't erays everithing that needed! (?)
 {
-    gRandom->SetSeed();
+    gRandom->SetSeed(time(NULL));	// set seed!
     TVector3 r1, r2;
 
     r1.SetX(1.0);
@@ -27,23 +28,21 @@ int main()
     r2.SetY(1.0);
     r2.SetZ(1.0);
     
-    const TString str = "ELECTRON";
-    
     CFissionBook::getInstance().updateData("FissionData");
     CParticleBook::getInstance().updateData("ParticleData");
 
-    CParticle *pParticle = CParticleFactory::particleFactory().createParticle(str, r1, r2);
+    CParticle *pParticle = CParticleFactory::particleFactory().createParticle("PI_ZERO", r1, r2);
 
     CCollider::collider().setStep(0.001);
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 5; i++)
     {
-	// printf("current step is %d", i);
+	std::cout << "step is " << i << " ------------------------------------------------------------" << std::endl;
 	CParticleFactory::particleFactory().show();
         CCollider::collider().step();
     }
 
-    std::cout << pParticle->pos().x() << " " << pParticle->pos().y() << " " << pParticle->pos().z() << std::endl;
-    delete pParticle;
+    // delete all particles
+    CParticleFactory::particleFactory().clean();
 
     /*CParticle *particle = CParticleFactory::getInstance().createParticle(EPtProton, r, v);
     CParticle *res_particle = CParticleFactory::getInstance().createParticle(EPtProton, r2, v + v);

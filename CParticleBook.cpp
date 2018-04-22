@@ -81,14 +81,13 @@ Int_t CParticleBook::updateData(TString _filename)
                                     temp_unfolded[3].Atof() };
     particleMap[ temp_unfolded[0] ] = temp_particle;
   }
-  std::cout << "Update data sucesfully, read " << particleMap.size() << "entries" << std::endl;
+  std::cout << "Update data sucesfully, read " << particleMap.size() << " entries" << std::endl;
   return 0;
 }
 
 const CParticleData& CParticleBook::getData(TString _particleName)
 {
   std::map<TString, CParticleData>::const_iterator search_iter;
-  std::cout << particleMap.size() << std::endl;
 
   search_iter = particleMap.find(_particleName);
   if (search_iter == particleMap.end())
