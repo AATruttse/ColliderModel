@@ -32,12 +32,14 @@ int main()	// doesn't erays everithing that needed! (?)
     CParticleBook::getInstance().updateData("ParticleData");
 
     CParticle *pParticle = CParticleFactory::particleFactory().createParticle("PI_ZERO", r1, r2);
-
+    CParticleFactory::particleFactory().create_tree("Event.root");
     CCollider::collider().setStep(0.001);
     for (int i = 0; i < 5; i++)
     {
 	std::cout << "step is " << i << " ------------------------------------------------------------" << std::endl;
 	CParticleFactory::particleFactory().show();
+	CParticleFactory::particleFactory().save_to_tree();
+	std::cout << "hi" << std::endl;
         CCollider::collider().step();
     }
 

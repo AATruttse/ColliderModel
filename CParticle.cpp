@@ -11,18 +11,18 @@
 
 namespace ColliderModel
 {
-    CParticle::CParticle(const TString &_name) :
-        CMovableObject()
+    CParticle::CParticle(const TString &_name, Int_t _ParentID) :
+        CMovableObject(), m_ParentID(_ParentID)
     {
     }
 
-    CParticle::CParticle(const TString &_name, const TVector3 &_pos) :
-        CMovableObject(_pos)
+    CParticle::CParticle(const TString &_name, const TVector3 &_pos, Int_t _ParentID) :
+        CMovableObject(_pos), m_ParentID(_ParentID)
     {
     }
 
-    CParticle::CParticle(const TString &_name, const TVector3 &_pos, const TVector3 &_velocity) :
-        CMovableObject(_pos, _velocity)
+    CParticle::CParticle(const TString &_name, const TVector3 &_pos, const TVector3 &_velocity, Int_t _ParentID) :
+        CMovableObject(_pos, _velocity), m_ParentID(_ParentID)
     {
         CParticleData data = CParticleBook::getInstance().getData(_name);
         m_Name = _name;
@@ -75,7 +75,7 @@ namespace ColliderModel
 			 Double_t vy = (gRandom->Integer(2)*2 - 1.0)*sqrt(vy_sqr);
 			 Double_t vz = (gRandom->Integer(2)*2 - 1.0)*sqrt(vz_sqr);
                          TVector3 vel(vx, vy, vz);	// we also need velocities < 0, so we need some random of -1 or 1!
-                         shat.push_back(CParticleFactory::particleFactory().createParticle((*it).fShatters[i], m_Pos, vel));   // remember shatters
+                         shat.push_back(CParticleFactory::particleFactory().createParticle((*it).fShatters[i], m_Pos, vel, m_ID));   // remember shatters
 			 std::cout << " by " << this << std::endl;
 			 E -= E_new;
                    }
@@ -86,7 +86,7 @@ namespace ColliderModel
 		   	partE += (*iter)->m_Mass*(*iter)->m_Velocity*(*iter)->m_Velocity/2;
 		   }
 		   TVector3 vLast = m_Mass*m_Velocity-totalMomentum*(1.0/CParticleBook::getInstance().getData((*it).fShatters[n - 1]).pMass);	// velocity of the last particle
-                   CParticleFactory::particleFactory().createParticle((*it).fShatters[n - 1], m_Pos, vLast);	// creation of the last particle
+                   CParticleFactory::particleFactory().createParticle((*it).fShatters[n - 1], m_Pos, vLast, m_ID);	// creation of the last particle
 		   partE += CParticleBook::getInstance().getData((*it).fShatters[n - 1]).pMass*vLast*vLast/2;
 		   std::cout << " by " << this  << std::endl;
 		   // check of laws of conservation
